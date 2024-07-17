@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Savings Calculator</title>
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+  <div id="calculatorContainer" class="container mt-5">
+    <label for="configDropdown" class="font-weight-bold">Select Configuration:</label>
+    <select id="configDropdown" class="form-control mb-3">
+      <option value="config1Form">DG set replacement</option>
+      <option value="config2Form">Household</option>
+      <option value="config3Form">Peak Shifting</option>
+      <option value="config4Form">Solar + BESS</option>
+      <option value="config5Form">Peak Shifting with Solar</option>
+    </select>
+
+    <div class="form-container">
+      <form id="config1Form" class="configForm" style="display: none;">
+        <h3>DG set replacement</h3>
+        <div class="row">
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="outageTime">Average outage time per day (in hrs):</label>
+            <input type="number" class="form-control" id="outageTime" value="5">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="peakLoad">Peak Load (in kW):</label>
+            <input type="number" class="form-control" id="peakLoad" value="40">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="lifeSpan">Life Span (in years):</label>
+            <input type="number" class="form-control" id="lifeSpan" value="25">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="discountRate">Discount rate (in %):</label>
+            <input type="number" class="form-control" id="discountRate" value="4">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="J">Battery Cost (in Rs/kWh):</label>
+            <input type="number" class="form-control" id="J" value="10000">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="dy">Active number of usage in a year (in days):</label>
+            <input type="number" class="form-control" id="dy" value="300">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="Rg">Grid Rate (in Rs/kWh):</label>
+            <input type="number" class="form-control" id="Rg" value="5">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="Rd">DG set Rate (in Rs/kWh):</label>
+            <input type="number" class="form-control" id="Rd" value="12">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Calculate</button>
+      </form>
+
+      <form id="config2Form" class="configForm" style="display: none;">
+        <h3>Household</h3>
+        <div class="row">
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="peakTime">Average peak time per day (in hrs):</label>
+            <input type="number" class="form-control" id="peakTime" value="2">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="peakLoad1">Peak Load (in kW):</label>
+            <input type="number" class="form-control" id="peakLoad1" value="40">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="lifeSpan1">Life Span (in years):</label>
+            <input type="number" class="form-control" id="lifeSpan1" value="25">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="discountRate1">Discount rate (in %):</label>
+            <input type="number" class="form-control" id="discountRate1" value="4">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="J1">Battery Cost (in Rs/kWh):</label>
+            <input type="number" class="form-control" id="J1" value="10000">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="K">Solar Cost (in Rs/kWh):</label>
+            <input type="number" class="form-control" id="K" value="50000">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="dy1">Active number of usage in a year (in days):</label>
+            <input type="number" class="form-control" id="dy1" value="300">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="Rg1">Grid Rate (in Rs/kWh):</label>
+            <input type="number" class="form-control" id="Rg1" value="5">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Calculate</button>
+      </form>
+
+      <form id="config3Form" class="configForm" style="display: none;">
+        <h3>Peak Shifting</h3>
+        <div class="row">
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="peakTime1">Average peak time per day (in hrs):</label>
+            <input type="number" class="form-control" id="peakTime1" value="2">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="peakLoad2">Peak Load (in kW):</label>
+            <input type="number" class="form-control" id="peakLoad2" value="40">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="lifeSpan2">Life Span (in years):</label>
+            <input type="number" class="form-control" id="lifeSpan2" value="25">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="discountRate2">Discount rate (in %):</label>
+            <input type="number" class="form-control" id="discountRate2" value="4">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="J2">Battery Cost (in Rs/kWh):</label>
+            <input type="number" class="form-control" id="J2" value="10000">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="dy2">Active number of usage in a year (in days):</label>
+            <input type="number" class="form-control" id="dy2" value="300">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="Rg2">Peak Grid Rate (in Rs/kWh):</label>
+            <input type="number" class="form-control" id="Rg2" value="5">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="Rop">Off-Peak Grid Rate (in Rs/kWh):</label>
+            <input type="number" class="form-control" id="Rop" value="12">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Calculate</button>
+      </form>
+        
+      <form id="config4Form" class="configForm" style="display: none;">
+        <h3>Solar + BESS</h3>
+        <div class="row">
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="Solar Capacity">Solar Capacity (in kW):</label>
+            <input type="number" class="form-control" id="Solar Capacity" value="2">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="SolarTime">Sunshine time in a day (in hours):</label>
+            <input type="number" class="form-control" id="SolarTime" value="40">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="peakLoad3">Peak Load in a day (in kW):</label>
+            <input type="number" class="form-control" id="peakLoad3" value="40">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="lifeSpan_solar">Life Span of Solar (in years):</label>
+            <input type="number" class="form-control" id="lifeSpan_solar" value="25">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="lifeSpan_bat">Life Span of Battery (in years):</label>
+            <input type="number" class="form-control" id="lifeSpan_bat" value="4">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="discountRate3">Discount rate (in %):</label>
+            <input type="number" class="form-control" id="discountRate3" value="4">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="J3">Battery Cost (in Rs/kWh):</label>
+            <input type="number" class="form-control" id="J3" value="10000">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="K1">Solar Cost (in Rs/kW):</label>
+            <input type="number" class="form-control" id="K1" value="10000">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="dy3">Active number of usage in a year (in days):</label>
+            <input type="number" class="form-control" id="dy3" value="300">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="Rg3">Grid Rate (in Rs/kWh):</label>
+            <input type="number" class="form-control" id="Rg3" value="5">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="C-rating">C-rating of battery:</label>
+            <input type="number" class="form-control" id="C-rating" value="2">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="Capacity per area">Capacity per area (in kW/m&sup2;):</label>
+            <input type="number" class="form-control" id="Capacity per area" value="2">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="Area Available">Area available for solar installation (in m&sup2;):</label>
+            <input type="number" class="form-control" id="Area Available" value="50">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Calculate</button>
+      </form>
+
+      <form id="config5Form" class="configForm" style="display: none;">
+        <h3>Peak Shifting with Solar</h3>
+        <div class="row">
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="Solar Capacity1">Solar Capacity (in kW):</label>
+            <input type="number" class="form-control" id="Solar Capacity1" value="2">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="SolarTime1">Sunshine time in a day (in hours):</label>
+            <input type="number" class="form-control" id="SolarTime1" value="40">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="peakLoad4">Peak Load in a day (in kW):</label>
+            <input type="number" class="form-control" id="peakLoad4" value="40">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="peakTime2">Peak time in a day (in hours):</label>
+            <input type="number" class="form-control" id="peakTime2" value="40">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="load Time">Load time in a day (in hours):</label>
+            <input type="number" class="form-control" id="load Time" value="40">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="lifeSpan_solar1">Life Span of Solar (in years):</label>
+            <input type="number" class="form-control" id="lifeSpan_solar1" value="25">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="lifeSpan_bat1">Life Span of Battery (in years):</label>
+            <input type="number" class="form-control" id="lifeSpan_bat1" value="4">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="discountRate4">Discount rate (in %):</label>
+            <input type="number" class="form-control" id="discountRate4" value="4">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="J4">Battery Cost (in Rs/kWh):</label>
+            <input type="number" class="form-control" id="J4" value="10000">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="K2">Solar Cost (in Rs/kW):</label>
+            <input type="number" class="form-control" id="K2" value="10000">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="dy4">Active number of usage in a year (in days):</label>
+            <input type="number" class="form-control" id="dy4" value="300">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="Rg4">Grid Rate (in Rs/kWh):</label>
+            <input type="number" class="form-control" id="Rg4" value="5">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="epsilon">epsilon:</label>
+            <input type="float" class="form-control" id="epsilon" value="0.25">
+          </div>
+          <div class="col-md-6 col-lg-4 mb-2">
+            <label for="C-rating1">C-rating of battery:</label>
+            <input type="number" class="form-control" id="C-rating1" value="2">
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary">Calculate</button>
+      </form>
+
+    <div id="result" class="mt-4"></div>
+    <div id="plot" class="mt-4"></div>
+    <div id="plot1" class="mt-4"></div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script src="main.js"></script>
+    <script src="DGsetReplacement.js"></script>
+    <script src="Household.js"></script>
+    <script src="PeakShifting.js"></script>
+    <script src="Solar + BESS model.js"></script>
+    <script src="PeakShifting with Solar.js"></script>
+  </div>
+</body>
+</html>
+
